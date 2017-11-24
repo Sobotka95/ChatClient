@@ -5,17 +5,11 @@ import java.util.List;
 
 public class Group extends Contact {
 	
-	private String name;
-	
 	private List<User> members;
 
 	public Group(String name) {
-		this.name = name;
+		super(name);
 		this.members = new ArrayList<User>();
-	}
-
-	public String getName() {
-		return name;
 	}
 
 	public List<User> getMembers() {
@@ -56,11 +50,6 @@ public class Group extends Contact {
 		members.remove(member);
 		member.getGroups().remove(this);
 		
-	}
-
-	@Override
-	public String toString() {
-		return name;
 	}
 
 }

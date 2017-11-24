@@ -72,7 +72,7 @@ public class UserInterface extends Application {
 	Button button_sendGroupMessage;
 	Button button_showGroupMembers;
 	
-	AuthenticationRepository userRepository;
+	AuthenticationRepository authRepository;
 	MessageRepository messageRepository;
 	ContactRepository contactRepository;
 
@@ -407,7 +407,7 @@ public class UserInterface extends Application {
 	}
 	
 	private void initRepositories() {
-		userRepository = new AuthenticationRepository();
+		authRepository = new AuthenticationRepository();
 		messageRepository = new MessageRepository();
 		contactRepository = new ContactRepository();
 	}
@@ -449,8 +449,7 @@ public class UserInterface extends Application {
 			listProperty_users.set(
 					FXCollections.observableArrayList (
 							contactRepository.getAllUsers(
-									userRepository.getUser().getUsername(), 
-									userRepository.getUser().getPassword()
+									authRepository.getAuth()
 									)
 							)
 					);
@@ -491,14 +490,14 @@ public class UserInterface extends Application {
 		stage.show();
 		
 		LoginDialog loginDialog = new LoginDialog();
-		Authentication user = loginDialog.show();	
+		Authentication auth = loginDialog.show();	
 		
-		if(user == null) {
+		if(auth == null) {
 			// If login was canceled exit application
 			Platform.exit();
 	        System.exit(0);
 		} else {
-			userRepository.setUser(user);
+			authRepository.setAuth(auth);
 		}
 		
 		

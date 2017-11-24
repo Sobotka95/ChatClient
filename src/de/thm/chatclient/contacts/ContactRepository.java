@@ -3,6 +3,7 @@ package de.thm.chatclient.contacts;
 import java.util.ArrayList;
 import java.util.List;
 
+import de.thm.chatclient.security.Authentication;
 import de.thm.oop.chat.base.server.*;
 
 public class ContactRepository {
@@ -16,9 +17,9 @@ public class ContactRepository {
 		groups = new ArrayList<Group>();
 	}
 	
-	public List<User> getAllUsers(String username, String password) throws Exception {
+	public List<User> getAllUsers(Authentication auth) throws Exception {
 		List<User> users = new ArrayList<User>();
-		for(String name: basicTHMChatServer.getUsers(username, password)) {
+		for(String name: basicTHMChatServer.getUsers(auth.getUsername(), auth.getPassword())) {
 			users.add(new User(name));
 		}
 		return users;

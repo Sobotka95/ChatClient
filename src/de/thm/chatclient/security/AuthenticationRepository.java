@@ -2,14 +2,14 @@ package de.thm.chatclient.security;
 
 public class AuthenticationRepository {
 	
-	private Authentication user;
+	private Authentication auth;
 	
-	public void setUser(Authentication user) {
-		this.user = user;
+	public void setAuth(Authentication user) {
+		this.auth = user;
 	}
 	
-	public Authentication getUser() {
-		return this.user;
+	public Authentication getAuth() {
+		return this.auth;
 	}
 
 }

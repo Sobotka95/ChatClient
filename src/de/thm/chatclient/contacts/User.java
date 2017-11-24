@@ -4,18 +4,12 @@ import java.util.ArrayList;
 import java.util.List;
 
 public class User extends Contact {
-
-	private String name;
 	
 	private List<Group> groups;
 
 	public User(String name) {
-		this.name = name;
+		super(name);
 		this.groups = new ArrayList<Group>();
-	}
-
-	public String getName() {
-		return name;
 	}
 	
 	public List<Group> getGroups() {
@@ -56,11 +50,6 @@ public class User extends Contact {
 		groups.remove(group);
 		group.getMembers().remove(this);
 		
-	}
-
-	@Override
-	public String toString() {
-		return name;
 	}
 	
 }
