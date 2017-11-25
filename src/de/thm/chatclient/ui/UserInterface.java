@@ -71,11 +71,6 @@ public class UserInterface extends Application {
 	Button button_createGroup;
 	Button button_sendGroupMessage;
 	Button button_showGroupMembers;
-	
-	AuthenticationRepository authRepository;
-	MessageRepository messageRepository;
-	ContactRepository contactRepository;
-
 
 	public static void main(String[] args) {
 		launch(args);
@@ -286,12 +281,12 @@ public class UserInterface extends Application {
 				
 				User selectedPerson = listView_users.getSelectionModel().getSelectedItem();
 				
-				AddToGroupDialog addToGroupDialog = new AddToGroupDialog(contactRepository.getAllGroups());
+				AddToGroupDialog addToGroupDialog = new AddToGroupDialog(ContactRepository.getInstance().getAllGroups());
 				String selectedGroupName = addToGroupDialog.show();
 				
 				if(selectedGroupName != null) {
 					try {
-						contactRepository.getGroupByName(selectedGroupName).addMember(selectedPerson);
+						ContactRepository.getInstance().getGroupByName(selectedGroupName).addMember(selectedPerson);
 					} catch(Exception ex) {
 						showAlert(AlertType.ERROR, "Fehler", "Fehler beim Hinzufügen zu einer Gruppe", ex.getMessage());
 					}
@@ -364,7 +359,7 @@ public class UserInterface extends Application {
 				Group group = createGroupDialog.show();			
 				if(group != null) {
 					try {
-						contactRepository.addGroup(group);
+						ContactRepository.getInstance().addGroup(group);
 						refreshGroupView();
 					} catch(Exception ex) {
 						showAlert(AlertType.ERROR, "Fehler", "Fehler beim Anlegen der Gruppe", ex.getMessage());
@@ -406,12 +401,6 @@ public class UserInterface extends Application {
 		
 	}
 	
-	private void initRepositories() {
-		authRepository = new AuthenticationRepository();
-		messageRepository = new MessageRepository();
-		contactRepository = new ContactRepository();
-	}
-	
 	private void newUserChat(String chatName) {
 		
 		boolean alreadyExists = false;
@@ -448,8 +437,8 @@ public class UserInterface extends Application {
 			ListProperty<User> listProperty_users = new SimpleListProperty<User>();
 			listProperty_users.set(
 					FXCollections.observableArrayList (
-							contactRepository.getAllUsers(
-									authRepository.getAuth()
+							ContactRepository.getInstance().getAllUsers(
+									AuthenticationRepository.getInstance().getAuth()
 									)
 							)
 					);
@@ -462,10 +451,21 @@ public class UserInterface extends Application {
 	private void refreshGroupView() {
 		try {
 			ListProperty<Group> listProperty_groups = new SimpleListProperty<Group>();
-			listProperty_groups.set(FXCollections.observableArrayList (contactRepository.getAllGroups()));
+			listProperty_groups.set(FXCollections.observableArrayList (ContactRepository.getInstance().getAllGroups()));
 			listView_groups.setItems(listProperty_groups);
 		} catch(Exception ex) {
 			showAlert(AlertType.ERROR, "Fehler", "Fehler beim Aktualisieren der Gruppenansicht", ex.getMessage());
+		}	
+	}
+	
+	private void refreshChatView() {
+		try {
+			List<Message> messages = MessageRepository.getInstance().getAllMessages(AuthenticationRepository.getInstance().getAuth(), 1);
+			for(Message message: messages) {
+				System.out.println(message);
+			}
+		} catch(Exception ex) {
+			showAlert(AlertType.ERROR, "Fehler", "Fehler beim Abrufen der Chatnachrichten", ex.getMessage());
 		}	
 	}
 	
@@ -481,8 +481,6 @@ public class UserInterface extends Application {
 		initScene();
 		
 		initEventListeners();
-		
-		initRepositories();
 			
 		stage.setScene(scene);
 		stage.setMinWidth(600);
@@ -497,12 +495,18 @@ public class UserInterface extends Application {
 			Platform.exit();
 	        System.exit(0);
 		} else {
-			authRepository.setAuth(auth);
+			AuthenticationRepository.getInstance().setAuth(auth);
 		}
 		
+		/*TextMessage textMessage = new TextMessage();
+		textMessage.setReceiver("julian.sobotka");
+		textMessage.setText("Hallo Welt!");
+		
+		MessageRepository.getInstance().sendMessage(AuthenticationRepository.getInstance().getAuth(), textMessage);*/
 		
 		refreshGroupView();
 		refreshUserView();
+		refreshChatView();
 		
 		/*
 		// load the stylesheet

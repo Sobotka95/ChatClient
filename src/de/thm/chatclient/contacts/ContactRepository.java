@@ -3,18 +3,35 @@ package de.thm.chatclient.contacts;
 import java.util.ArrayList;
 import java.util.List;
 
+import de.thm.chatclient.messages.MessageRepository;
 import de.thm.chatclient.security.Authentication;
 import de.thm.oop.chat.base.server.*;
 
 public class ContactRepository {
 	
-	BasicTHMChatServer basicTHMChatServer;
+	private static ContactRepository instance;
 	
 	private List<Group> groups;
+	
+	private List<User> users;
+
+	private BasicTHMChatServer basicTHMChatServer;
+	
+	
+	public static ContactRepository getInstance() {
+		
+		if(instance == null) {
+			instance = new ContactRepository();		
+		}
+		
+		return instance;
+		
+	}
 	
 	public ContactRepository() {
 		basicTHMChatServer = new BasicTHMChatServer();
 		groups = new ArrayList<Group>();
+		users = new ArrayList<User>();
 	}
 	
 	public List<User> getAllUsers(Authentication auth) throws Exception {
@@ -23,6 +40,22 @@ public class ContactRepository {
 			users.add(new User(name));
 		}
 		return users;
+	}
+	
+	public User getUserByName(Authentication auth, String userName) throws Exception {
+		
+		List<User> users = getAllUsers(auth);
+		int index = -1;
+		for(int i=0; i<users.size(); i++) {
+			if(users.get(i).getName().equals(userName)) {
+				index = i;
+			}
+		}
+		if(index != -1) {
+			return users.get(index);
+		} else {
+			return null;
+		}
 	}
 	
 	public List<Group> getAllGroups() {
