@@ -74,7 +74,7 @@ public class AddToGroupDialog {
 		    if (dialogButton == buttonType_apply) {
 		        return  comboBox_groupSelection.getItems().get(comboBox_groupSelection.getSelectionModel().getSelectedIndex()).getName();
 		    } else {
-		    		return null;
+		    		return "";
 		    }	    
 		});
 		

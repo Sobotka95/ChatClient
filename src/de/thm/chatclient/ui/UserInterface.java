@@ -20,6 +20,7 @@ import javafx.scene.control.Label;
 import javafx.scene.control.ListView;
 import javafx.scene.control.Tab;
 import javafx.scene.control.TabPane;
+import javafx.scene.control.TextArea;
 import javafx.scene.control.TextField;
 import javafx.scene.layout.BorderPane;
 import javafx.scene.layout.HBox;
@@ -28,6 +29,7 @@ import javafx.scene.paint.Color;
 import javafx.scene.shape.Rectangle;
 import javafx.stage.Stage;
 
+import java.util.ArrayList;
 import java.util.List;
 
 import de.jensd.fx.glyphs.GlyphIcon;
@@ -118,7 +120,7 @@ public class UserInterface extends Application {
 		 * Init TabPane Chat
 		 */
 		tabPane_chat = new TabPane();
-		tabPane_chat.setMaxWidth(300);
+		tabPane_chat.setMaxWidth(500);
 		vBox_left.getChildren().add(tabPane_chat);
 	    
 		borderPane_root.setLeft(vBox_left);
@@ -284,7 +286,7 @@ public class UserInterface extends Application {
 				AddToGroupDialog addToGroupDialog = new AddToGroupDialog(ContactRepository.getInstance().getAllGroups());
 				String selectedGroupName = addToGroupDialog.show();
 				
-				if(selectedGroupName != null) {
+				if(!selectedGroupName.equals("")) {
 					try {
 						ContactRepository.getInstance().getGroupByName(selectedGroupName).addMember(selectedPerson);
 					} catch(Exception ex) {
@@ -401,26 +403,35 @@ public class UserInterface extends Application {
 		
 	}
 	
-	private void newUserChat(String chatName) {
+	private void newUserChat(String username) {
 		
 		boolean alreadyExists = false;
 		
 		for(Tab tab: tabPane_chat.getTabs()) {
-			if(tab.getText().equals("Chat: " + chatName)) {
+			if(tab.getText().equals(username)) {
 				alreadyExists = true;
 			}
 		}
 		
 		if(alreadyExists) {
 			return;
-		}
+		}		
 		
-		Tab chatTab = new Tab();
-		chatTab.setText("Chat: " + chatName);
-		chatTab.setContent(new Rectangle(300,300, Color.WHITE));
-		tabPane_chat.getTabs().add(chatTab);
+		TextArea textArea_chat = new TextArea();
+		textArea_chat.setMinSize(480, 200);	
+		
+		VBox vBox_chat = new VBox();	
+		vBox_chat.getChildren().add(textArea_chat);
+		
+		Tab tab_chat = new Tab();
+		tab_chat.setText(username);
+		tab_chat.setContent(vBox_chat);
+		
+		tabPane_chat.getTabs().add(tab_chat);
 		tabPane_chat.requestFocus();
 		tabPane_chat.getSelectionModel().select(tabPane_chat.getTabs().size() - 1);		
+		
+		refreshChatView(tabPane_chat.getSelectionModel().getSelectedIndex());
 		
 	}
 	
@@ -458,15 +469,22 @@ public class UserInterface extends Application {
 		}	
 	}
 	
-	private void refreshChatView() {
+	private void refreshChatView(int chatIndex) {
+		
 		try {
-			List<Message> messages = MessageRepository.getInstance().getAllMessages(AuthenticationRepository.getInstance().getAuth(), 1);
+			List<Message> messages = MessageRepository.getInstance().getMessagesFromUser(AuthenticationRepository.getInstance().getAuth(), tabPane_chat.getTabs().get(chatIndex).getText(), 1);
+			
+			String text_chat = "";
 			for(Message message: messages) {
-				System.out.println(message);
-			}
+				text_chat += message.toString() + System.lineSeparator();
+			}		
+
+			((TextArea)((VBox)tabPane_chat.getTabs().get(chatIndex).getContent()).getChildren().get(0)).setText(text_chat);		
+			
 		} catch(Exception ex) {
 			showAlert(AlertType.ERROR, "Fehler", "Fehler beim Abrufen der Chatnachrichten", ex.getMessage());
 		}	
+		
 	}
 	
 	@Override
@@ -483,8 +501,8 @@ public class UserInterface extends Application {
 		initEventListeners();
 			
 		stage.setScene(scene);
-		stage.setMinWidth(600);
-		stage.setMinHeight(600);
+		stage.setMinWidth(1024);
+		stage.setMinHeight(768);
 		stage.show();
 		
 		LoginDialog loginDialog = new LoginDialog();
@@ -506,7 +524,6 @@ public class UserInterface extends Application {
 		
 		refreshGroupView();
 		refreshUserView();
-		refreshChatView();
 		
 		/*
 		// load the stylesheet

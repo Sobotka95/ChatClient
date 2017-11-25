@@ -62,6 +62,29 @@ public class MessageRepository {
 		return messages;
 	}
 	
+public List<Message> getMessagesFromUser(Authentication auth, String username, long since) throws Exception {
+		
+		BasicTHMChatServer basicTHMChatServer = new BasicTHMChatServer();
+		
+		List<Message> allMessages = getAllMessages(auth, since);
+		List<Message> userMessages = new ArrayList<Message>();
+		
+		for(Message message: allMessages) {
+			
+			if(message.getDirection().equals("in") ) {
+				if(message.getSender().equals(username)) {
+					userMessages.add(message);
+				}
+			} else if(message.getDirection().equals("out")) {
+				if(message.getReceiver().equals(username)) {
+					userMessages.add(message);
+				}
+			}
+		}
+		
+		return userMessages;
+	}
+	
 	private void sendTextMessage(Authentication auth, TextMessage textMessage) throws Exception {
 		
 		BasicTHMChatServer basicTHMChatServer = new BasicTHMChatServer();
