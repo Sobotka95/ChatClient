@@ -30,6 +30,7 @@ public class AddToGroupDialog {
 	private ButtonType buttonType_apply;
 	private Node node_apply;
 	
+	private String selectedGroupName = "";
 	
 	public AddToGroupDialog(List<Group> groups) {
 		
@@ -41,6 +42,7 @@ public class AddToGroupDialog {
 		// Set the button types.
 		buttonType_apply = new ButtonType("OK", ButtonData.OK_DONE);
 		dialog.getDialogPane().getButtonTypes().addAll(buttonType_apply, ButtonType.CANCEL);
+		node_apply = dialog.getDialogPane().lookupButton(buttonType_apply);
 		
 		vBox_root = new VBox();
 		hBox_header = new HBox();
@@ -53,18 +55,21 @@ public class AddToGroupDialog {
 		listProperty_groups.set(FXCollections.observableArrayList (groups));
 		comboBox_groupSelection.setItems(listProperty_groups);
 		comboBox_groupSelection.setEditable(true);   
+		if(comboBox_groupSelection.getItems().size() > 0) {
+			comboBox_groupSelection.getSelectionModel().select(0);
+			selectedGroupName = comboBox_groupSelection.getSelectionModel().getSelectedItem().getName();
+		} else {
+			node_apply.setDisable(true);
+		}
 		hBox_header.getChildren().add(comboBox_groupSelection);
 		
 		vBox_root.getChildren().add(hBox_header);
-		dialog.getDialogPane().setContent(vBox_root);	
-		
-		node_apply = dialog.getDialogPane().lookupButton(buttonType_apply);
-		node_apply.setDisable(true);
+		dialog.getDialogPane().setContent(vBox_root);			
 		
 		// Do some validation
 		comboBox_groupSelection.getSelectionModel().selectedItemProperty().asString().addListener( (options, oldValue, newValue) -> {
+			selectedGroupName = newValue;
 			System.out.println(newValue);
-			node_apply.setDisable(false);
 		}); 
 		
 		
@@ -72,7 +77,7 @@ public class AddToGroupDialog {
 		
 		dialog.setResultConverter(dialogButton -> {
 		    if (dialogButton == buttonType_apply) {
-		        return  comboBox_groupSelection.getItems().get(comboBox_groupSelection.getSelectionModel().getSelectedIndex()).getName();
+		        return  selectedGroupName;
 		    } else {
 		    		return "";
 		    }	    

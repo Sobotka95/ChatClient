@@ -8,6 +8,7 @@ public class ImageMessage extends Message {
 		return new ImageMessage();
 	}
 
+	
 	public Image getImage() {
 		return image;
 	}
@@ -18,7 +19,16 @@ public class ImageMessage extends Message {
 
 	@Override
 	public String toString() {
-		return "ImageMessage" + super.toString() + "]";
+		if(getImage() instanceof ImageLink) {
+			return super.toString() 
+					+ "\t\t" 
+					+ ((ImageLink)getImage()).getUrl() + "(" + ((ImageLink)getImage()).getMimeType() + ")"
+					+ System.lineSeparator()
+					+ System.lineSeparator()
+					+ "-------------------------------------------------------------------------------------------";
+		} else {
+			return "ImageMessage [Wrong object type for casting]";
+		}
 	}
 		
 }

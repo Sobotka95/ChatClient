@@ -476,10 +476,16 @@ public class UserInterface extends Application {
 			
 			String text_chat = "";
 			for(Message message: messages) {
-				text_chat += message.toString() + System.lineSeparator();
-			}		
+				text_chat +=
+						message.toString() 
+						+ System.lineSeparator()
+						+ System.lineSeparator();
+			}
 
-			((TextArea)((VBox)tabPane_chat.getTabs().get(chatIndex).getContent()).getChildren().get(0)).setText(text_chat);		
+			((TextArea)((VBox)tabPane_chat.getTabs()
+					.get(chatIndex).getContent())
+						.getChildren().get(0))
+							.setText(text_chat);
 			
 		} catch(Exception ex) {
 			showAlert(AlertType.ERROR, "Fehler", "Fehler beim Abrufen der Chatnachrichten", ex.getMessage());
@@ -501,7 +507,9 @@ public class UserInterface extends Application {
 		initEventListeners();
 			
 		stage.setScene(scene);
+		stage.setWidth(1024);
 		stage.setMinWidth(1024);
+		stage.setHeight(768);
 		stage.setMinHeight(768);
 		stage.show();
 		

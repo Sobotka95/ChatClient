@@ -43,7 +43,12 @@ public class TextMessage extends Message {
 
 	@Override
 	public String toString() {
-		return "TextMessage" + super.toString() + ", getText()=" + getText() + "]";
+		return super.toString() 
+				+ "\t\t" 
+				+ getText()
+				+ System.lineSeparator()
+				+ System.lineSeparator()
+				+ "-------------------------------------------------------------------------------------------";
 	}	
 
 }

@@ -1,5 +1,12 @@
 package de.thm.chatclient.messages;
 
+import java.text.SimpleDateFormat;
+import java.time.Instant;
+import java.time.ZoneId;
+import java.time.format.DateTimeFormatter;
+import java.util.Date;
+import java.util.TimeZone;
+
 public abstract class Message {
 
 	private String sender;
@@ -57,6 +64,10 @@ public abstract class Message {
 	public void setTimestamp(long timestamp) {
 		this.timestamp = timestamp;
 	}
+	
+	public String getDateString() {
+		return (new Date(getTimestamp()*1000)).toString();
+	}
 
 	public String getDirection() {
 		return direction;
@@ -68,8 +79,20 @@ public abstract class Message {
 
 	@Override
 	public String toString() {
-		return " [getSender()=" + getSender() + ", getReceiver()=" + getReceiver() + ", getTimestamp()="
-				+ getTimestamp() + ", getDirection()=" + getDirection();
+		if(getDirection().equals("in")) {
+			return "-------------------------------------------------------------------------------------------"
+					+ System.lineSeparator() 
+					+ "Empfangen von " + getSender() + " um " + getDateString() + ") : "
+					+ System.lineSeparator() 
+					+ System.lineSeparator();
+		} else {
+			return "-------------------------------------------------------------------------------------------"
+					+ System.lineSeparator()  
+					+ "Gesendet an " + getReceiver() + " um " + getDateString() + ") : " 
+					+ System.lineSeparator()
+					+ System.lineSeparator();
+		}
+		
 	}
 	
 }
