@@ -418,10 +418,46 @@ public class UserInterface extends Application {
 		}		
 		
 		TextArea textArea_chat = new TextArea();
-		textArea_chat.setMinSize(480, 200);	
+		textArea_chat.setMinSize(480, 350);	
+		
+		HBox hBox_messageButtons = new HBox();
+		
+		Button button_newTextMessage = fxBuilder.createButton(FontAwesome.ICON.TEXT_O, "Textnachricht", 1);
+		BorderPane.setMargin(button_newTextMessage, new Insets(10, 10, 10, 10));	
+		button_newTextMessage.setOnAction(new EventHandler<ActionEvent>() {	
+			@Override
+			public void handle(ActionEvent arg0) {	
+				try {
+					NewTextMessageDialog newTextMessageDialog = new NewTextMessageDialog();
+					String text = newTextMessageDialog.show();	
+					TextMessage textMessage = new TextMessage();
+					textMessage.setSender(AuthenticationRepository.getInstance().getAuth().getUsername());
+					textMessage.setReceiver(tabPane_chat.getSelectionModel().getSelectedItem().getText());
+					textMessage.setText(text);
+					MessageRepository.getInstance().sendMessage(AuthenticationRepository.getInstance().getAuth(), textMessage);
+				} catch(Exception ex) {
+					showAlert(AlertType.ERROR, "Fehler", "Fehler beim Senden der Textnachricht", ex.getMessage());
+				} finally {
+					refreshChatView(tabPane_chat.getSelectionModel().getSelectedIndex());
+				}
+				
+			}	
+		});
+		hBox_messageButtons.getChildren().add(button_newTextMessage);
+	
+		Button button_newImageMessage = fxBuilder.createButton(FontAwesome.ICON.PHOTO, "Bildnachricht", 1);
+		BorderPane.setMargin(button_newImageMessage, new Insets(10, 10, 10, 10));	
+		button_newImageMessage.setOnAction(new EventHandler<ActionEvent>() {	
+			@Override
+			public void handle(ActionEvent arg0) {
+				// TODO: implement NewImageMessageDialog				
+			}	
+		});
+		hBox_messageButtons.getChildren().add(button_newImageMessage);
 		
 		VBox vBox_chat = new VBox();	
 		vBox_chat.getChildren().add(textArea_chat);
+		vBox_chat.getChildren().add(hBox_messageButtons);
 		
 		Tab tab_chat = new Tab();
 		tab_chat.setText(username);

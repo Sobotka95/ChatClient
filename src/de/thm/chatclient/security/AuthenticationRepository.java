@@ -19,8 +19,8 @@ public class AuthenticationRepository {
 		
 	}
 	
-	public void setAuth(Authentication user) {
-		this.auth = user;
+	public void setAuth(Authentication auth) {
+		this.auth = auth;
 	}
 	
 	public Authentication getAuth() {

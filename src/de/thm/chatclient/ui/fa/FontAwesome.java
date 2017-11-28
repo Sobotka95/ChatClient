@@ -13,7 +13,9 @@ public class FontAwesome {
 		USER_PLUS,
 		GROUP,
 		WECHAT,
-		PLUS
+		PLUS,
+		PHOTO,
+		TEXT_O
 	}
 	
 	private Font font;
@@ -34,6 +36,12 @@ public class FontAwesome {
 			}
 			case PLUS: {
 				return "\uf067";
+			}
+			case PHOTO: {
+				return "\uf03e";
+			}
+			case TEXT_O: {
+				return "\uf0f6";
 			}
 			default: {
 				return "";
