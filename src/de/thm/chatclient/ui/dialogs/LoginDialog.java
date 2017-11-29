@@ -29,8 +29,8 @@ public class LoginDialog {
 	public LoginDialog() {
 		// Create the custom dialog.
 		dialog = new Dialog<Authentication>();
-		dialog.setTitle("Login Dialog");
-		dialog.setHeaderText("Look, a Custom Login Dialog");
+		dialog.setTitle("Anmelden");
+		dialog.setHeaderText("Bitte geben Sie Ihre Benutzerdaten ein");
 
 		// Set the icon (must be included in the project).
 		//dialog.setGraphic(new ImageView(this.getClass().getResource("login.png").toString()));
@@ -46,13 +46,13 @@ public class LoginDialog {
 		gridPane_root.setPadding(new Insets(20, 150, 10, 10));
 
 		textField_username = new TextField();
-		textField_username.setPromptText("Username");
+		textField_username.setPromptText("Benutzername");
 		passwordField_password = new PasswordField();
-		passwordField_password.setPromptText("Password");
+		passwordField_password.setPromptText("Passwort");
 
-		gridPane_root.add(new Label("Username:"), 0, 0);
+		gridPane_root.add(new Label("Benutzername:"), 0, 0);
 		gridPane_root.add(textField_username, 1, 0);
-		gridPane_root.add(new Label("Password:"), 0, 1);
+		gridPane_root.add(new Label("Passwort:"), 0, 1);
 		gridPane_root.add(passwordField_password, 1, 1);
 
 		// Enable/Disable login button depending on whether a username was entered.

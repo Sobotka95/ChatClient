@@ -66,7 +66,10 @@ public abstract class Message {
 	}
 	
 	public String getDateString() {
-		return (new Date(getTimestamp()*1000)).toString();
+		Date date = new Date(getTimestamp());
+		SimpleDateFormat sdf = new SimpleDateFormat("dd.MM.yyyy HH:mm:ss z"); // the format of your date
+		sdf.setTimeZone(TimeZone.getTimeZone("GMT+1")); // give a timezone reference for formating (see comment at the bottom
+		return sdf.format(date);
 	}
 
 	public String getDirection() {
@@ -82,13 +85,13 @@ public abstract class Message {
 		if(getDirection().equals("in")) {
 			return "-------------------------------------------------------------------------------------------"
 					+ System.lineSeparator() 
-					+ "Empfangen von " + getSender() + " um " + getDateString() + ") : "
+					+ "Empfangen von " + getSender() + " am " + getDateString() + ") : "
 					+ System.lineSeparator() 
 					+ System.lineSeparator();
 		} else {
 			return "-------------------------------------------------------------------------------------------"
 					+ System.lineSeparator()  
-					+ "Gesendet an " + getReceiver() + " um " + getDateString() + ") : " 
+					+ "Gesendet an " + getReceiver() + " am " + getDateString() + ") : " 
 					+ System.lineSeparator()
 					+ System.lineSeparator();
 		}

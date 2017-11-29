@@ -417,8 +417,18 @@ public class UserInterface extends Application {
 			return;
 		}		
 		
+		Button button_refresh = fxBuilder.createButton(FontAwesome.ICON.REFRESH, "Aktualisieren", 1);
+		BorderPane.setMargin(button_refresh, new Insets(10, 10, 10, 10));
+		button_refresh.setOnAction(new EventHandler<ActionEvent>() {	
+			@Override
+			public void handle(ActionEvent arg0) {	
+				refreshChatView(tabPane_chat.getSelectionModel().getSelectedIndex());
+			}	
+		});
+		
 		TextArea textArea_chat = new TextArea();
-		textArea_chat.setMinSize(480, 350);	
+		textArea_chat.setMinSize(480, 350);
+		textArea_chat.setEditable(false);
 		
 		HBox hBox_messageButtons = new HBox();
 		
@@ -431,10 +441,12 @@ public class UserInterface extends Application {
 					NewTextMessageDialog newTextMessageDialog = new NewTextMessageDialog();
 					String text = newTextMessageDialog.show();	
 					TextMessage textMessage = new TextMessage();
-					textMessage.setSender(AuthenticationRepository.getInstance().getAuth().getUsername());
-					textMessage.setReceiver(tabPane_chat.getSelectionModel().getSelectedItem().getText());
-					textMessage.setText(text);
-					MessageRepository.getInstance().sendMessage(AuthenticationRepository.getInstance().getAuth(), textMessage);
+					if(!text.equals("")) {
+						textMessage.setSender(AuthenticationRepository.getInstance().getAuth().getUsername());
+						textMessage.setReceiver(tabPane_chat.getSelectionModel().getSelectedItem().getText());
+						textMessage.setText(text);
+						MessageRepository.getInstance().sendMessage(AuthenticationRepository.getInstance().getAuth(), textMessage);
+					}
 				} catch(Exception ex) {
 					showAlert(AlertType.ERROR, "Fehler", "Fehler beim Senden der Textnachricht", ex.getMessage());
 				} finally {
@@ -456,6 +468,7 @@ public class UserInterface extends Application {
 		hBox_messageButtons.getChildren().add(button_newImageMessage);
 		
 		VBox vBox_chat = new VBox();	
+		vBox_chat.getChildren().add(button_refresh);
 		vBox_chat.getChildren().add(textArea_chat);
 		vBox_chat.getChildren().add(hBox_messageButtons);
 		
@@ -520,8 +533,18 @@ public class UserInterface extends Application {
 
 			((TextArea)((VBox)tabPane_chat.getTabs()
 					.get(chatIndex).getContent())
-						.getChildren().get(0))
+						.getChildren().get(1))
 							.setText(text_chat);
+			
+			// Scroll to end
+			((TextArea)((VBox)tabPane_chat.getTabs()
+					.get(chatIndex).getContent())
+						.getChildren().get(1))
+							.selectPositionCaret(text_chat.length()); 
+			((TextArea)((VBox)tabPane_chat.getTabs()
+					.get(chatIndex).getContent())
+						.getChildren().get(1))
+							.deselect(); 
 			
 		} catch(Exception ex) {
 			showAlert(AlertType.ERROR, "Fehler", "Fehler beim Abrufen der Chatnachrichten", ex.getMessage());

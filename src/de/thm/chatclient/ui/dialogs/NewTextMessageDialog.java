@@ -17,6 +17,7 @@ import javafx.scene.control.ComboBox;
 import javafx.scene.control.Dialog;
 import javafx.scene.control.Label;
 import javafx.scene.control.PasswordField;
+import javafx.scene.control.TextArea;
 import javafx.scene.control.TextField;
 import javafx.scene.control.ButtonBar.ButtonData;
 import javafx.scene.layout.BorderPane;
@@ -28,8 +29,8 @@ import javafx.util.Pair;
 public class NewTextMessageDialog {
 	
 	private Dialog<String> dialog;
-	private HBox hBox_textMessage;
-	private TextField textField_message;
+	private VBox vBox_textMessage;
+	private TextArea textArea_message;
 	private ButtonType buttonType_send;
 	private Node button_send;
 	
@@ -49,23 +50,25 @@ public class NewTextMessageDialog {
 		button_send = dialog.getDialogPane().lookupButton(buttonType_send);
 		button_send.setDisable(true);
 		
-		hBox_textMessage = new HBox();
-		hBox_textMessage.getChildren().add(new Label("Nachricht:"));
+		vBox_textMessage = new VBox();
+		vBox_textMessage.getChildren().add(new Label("Nachricht:"));
 		
-		textField_message = new TextField();
-		BorderPane.setMargin(textField_message, new Insets(15, 15, 15, 15));
-		textField_message.textProperty().addListener(new ChangeListener<String>() {
+		textArea_message = new TextArea();
+		textArea_message.setMinHeight(25);
+		textArea_message.setMaxHeight(25);
+		BorderPane.setMargin(textArea_message, new Insets(15, 15, 15, 15));
+		textArea_message.textProperty().addListener(new ChangeListener<String>() {
 	        @Override 
 	        public void changed(ObservableValue ov, String oldValue, String newValue) {
 	        		message = newValue;
 	        		button_send.setDisable(false);
 	        }    
 	    });
-		hBox_textMessage.getChildren().add(textField_message);
+		vBox_textMessage.getChildren().add(textArea_message);
 
-		dialog.getDialogPane().setContent(hBox_textMessage);
+		dialog.getDialogPane().setContent(vBox_textMessage);
 
-		Platform.runLater(() -> textField_message.requestFocus());
+		Platform.runLater(() -> textArea_message.requestFocus());
 
 		dialog.setResultConverter(dialogButton -> {
 		if (dialogButton == buttonType_send) {
