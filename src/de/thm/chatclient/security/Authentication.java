@@ -27,6 +27,9 @@ public class Authentication {
 		this.password = password;
 	}
 	
-	
+	@Override
+	public String toString() {
+		return "Authentication: [username: " + getUsername() + ", password: " + getPassword() + "]";
+	}
 
 }
