@@ -3,11 +3,11 @@ package de.thm.chatclient.contacts;
 import java.util.ArrayList;
 import java.util.List;
 
-public class User extends Contact {
+public class Person extends Contact {
 	
 	private List<Group> groups;
 
-	public User(String name) {
+	public Person(String name) {
 		super(name);
 		this.groups = new ArrayList<Group>();
 	}

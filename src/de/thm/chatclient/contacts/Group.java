@@ -5,18 +5,18 @@ import java.util.List;
 
 public class Group extends Contact {
 	
-	private List<User> members;
+	private List<Person> members;
 
 	public Group(String name) {
 		super(name);
-		this.members = new ArrayList<User>();
+		this.members = new ArrayList<Person>();
 	}
 
-	public List<User> getMembers() {
+	public List<Person> getMembers() {
 		return members;
 	}
 	
-	public User getMemberByName(String memberName) {
+	public Person getMemberByName(String memberName) {
 		int index = -1;
 		for(int i=0; i<members.size(); i++) {
 			if(members.get(i).getName().equals(memberName)) {
@@ -30,7 +30,7 @@ public class Group extends Contact {
 		}
 	}
 	
-	public void addMember(User member) throws Exception {
+	public void addMember(Person member) throws Exception {
 		if(getMemberByName(member.getName()) != null) {
 			throw new Exception("Member with this name already exists");
 		}	
@@ -40,7 +40,7 @@ public class Group extends Contact {
 	
 	public void removeMember(String memberName) throws Exception {
 		
-		User member = this.getMemberByName(memberName);
+		Person member = this.getMemberByName(memberName);
 		
 		if(member == null) {
 			// Member with this name does not exist
