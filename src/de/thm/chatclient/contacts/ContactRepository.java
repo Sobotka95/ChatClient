@@ -17,6 +17,13 @@ public class ContactRepository implements ContactRepositoryInterface {
 		groups = new ArrayList<Group>();
 	}
 	
+	public List<Contact> getAllContacts(Authentication auth) throws Exception {
+		List<Contact> contacts = new ArrayList<Contact>();
+		contacts.addAll(getAllGroups());
+		contacts.addAll(getAllPersons(auth));
+		return contacts;
+	}
+	
 	public List<Person> getAllPersons(Authentication auth) throws Exception {
 		List<Person> persons = new ArrayList<Person>();
 		for(String name: basicTHMChatServer.getUsers(auth.getUsername(), auth.getPassword())) {

@@ -52,4 +52,9 @@ public class Person extends Contact {
 		
 	}
 	
+	@Override
+	public String toString() {
+		return "(Person) " + super.toString();
+	}
+	
 }

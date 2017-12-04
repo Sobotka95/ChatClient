@@ -51,5 +51,10 @@ public class Group extends Contact {
 		member.getGroups().remove(this);
 		
 	}
+	
+	@Override
+	public String toString() {
+		return "(Gruppe) " + super.toString();
+	}
 
 }
