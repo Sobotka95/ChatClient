@@ -1,9 +1,19 @@
 package de.thm.chatclient.messages;
 
-public class Image {
+public abstract class Image {
 	
-	private String mimeType;
+	private String type;
 	
-	private long size;
+	
+	
+	//Getters and Setters
+	public String getType() {
+		return type;
+	}
+
+
+	public void setType(String type2) {
+		this.type = type2;
+	}
 
 }
