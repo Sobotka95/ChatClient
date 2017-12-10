@@ -7,6 +7,10 @@ public class RawImage extends Image {
 	private File f;
 	private String splitChar = "//.";
 	
+	public RawImage(String string) {
+		setPath(string);
+	}
+
 	public void setPath(String path) {
 		f = new File(path);
 		
