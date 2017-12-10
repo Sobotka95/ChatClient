@@ -44,30 +44,17 @@ public class UserInterface {
 		
 	
 	private static void login() {
-		System.out.println("Anmeldung");
 		Scanner in = new Scanner(System.in);
-		
-		try {
-			boolean loginSucceeded;
-			
-			do{
-				System.out.print("Benutzername: ");
-				String username = in.next();
-				System.out.print("Passwort: ");
-				String password = in.next();
-				authenticationRepository.setAuth(new Authentication(username, password));
-			
-				// TODO: Check authentication
-				loginSucceeded = authenticationRepository.loginCheck();
-			
-				if (!loginSucceeded) System.out.println("Unter den eigegeben Daten konnte kein Benutzer gefunden werden überprüfen sie die Eingabe und die Internet Verbindung.");
-			}
-			while (!loginSucceeded);
-			
-		} catch (Exception ex) {
-			
-		} finally {
-			in.close();
-		}
+
+		System.out.println("Username: ");
+
+		String username = in.next();
+
+		System.out.println("Password: ");
+
+		String password = in.next();
+
+		authenticationRepository.setAuth(username,password);
+
 	}
 }
