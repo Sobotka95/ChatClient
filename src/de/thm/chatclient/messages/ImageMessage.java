@@ -15,7 +15,7 @@ public class ImageMessage extends Message {
 	
 	@Override
 	public String toString() {
-		return "Bild Nachicht "
+		return "Bildnachicht "
 				+ super.toString() 
 				+ image.toString();
 	}

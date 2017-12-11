@@ -16,10 +16,10 @@ public class Group extends Contact {
 		return members;
 	}
 	
-	public Person getMemberByName(String memberName) {
+	public Person getMemberByName(String membername) {
 		int index = -1;
 		for(int i=0; i<members.size(); i++) {
-			if(members.get(i).getName().equals(memberName)) {
+			if(members.get(i).getName().equals(membername)) {
 				index = i;
 			}
 		}
@@ -32,19 +32,19 @@ public class Group extends Contact {
 	
 	public void addMember(Person member) throws Exception {
 		if(getMemberByName(member.getName()) != null) {
-			throw new Exception("Member with this name already exists");
+			throw new Exception("Die Person ist bereits Mitglied dieser Gruppe");
 		}	
 		members.add(member);
 		member.getGroups().add(this);
 	}
 	
-	public void removeMember(String memberName) throws Exception {
+	public void removeMember(String membername) throws Exception {
 		
-		Person member = this.getMemberByName(memberName);
+		Person member = this.getMemberByName(membername);
 		
 		if(member == null) {
 			// Member with this name does not exist
-			throw new Exception("A Member with this name does not exists");
+			throw new Exception("Die Person ist nicht Mitglied der Gruppe");
 		}
 		
 		members.remove(member);

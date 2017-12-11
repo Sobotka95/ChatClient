@@ -32,7 +32,7 @@ public class Person extends Contact {
 	
 	public void addGroup(Group group) throws Exception {
 		if(getGroupByName(group.getName()) != null) {
-			throw new Exception("Group with this name already exists");
+			throw new Exception("Eine Gruppe mit diesem Namen existiert bereits");
 		}	
 		groups.add(group);
 		group.getMembers().add(this);
@@ -43,8 +43,8 @@ public class Person extends Contact {
 		Group group = this.getGroupByName(groupName);
 		
 		if(group == null) {
-			// Member with this name does not exist
-			throw new Exception("A Group with this name does not exists");
+			// Group with this name does not exist
+			throw new Exception("Eine Gruppe mit diesem Name existiert nicht");
 		}
 		
 		groups.remove(group);
@@ -59,9 +59,9 @@ public class Person extends Contact {
 		String username = getName();
 		
 		username = username.replace('-', '.');
-		username = username.replace("oe", "ö");
-		username = username.replace("ae", "ä");
-		username = username.replace("ue", "ü");
+		username = username.replace("oe", "Ã¶");
+		username = username.replace("ae", "Ã¤");
+		username = username.replace("ue", "Ã¼");
 		
 		for (String element : username.split("\\.")) {
 			nickname += element.substring(0, 1).toUpperCase() + element.substring(1) + " ";

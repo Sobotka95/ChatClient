@@ -34,7 +34,7 @@ public abstract class Message {
 		return  "Zeit: " + timestampConvert(getTimestamp()) 
 				+ ", Richtung: " + getDirection() 
 				+ ", Sender: " + getTransmitter()
-				+ ", Empf‰nger: " + getReceiver();
+				+ ", Empf√§nger: " + getReceiver();
 	}
 	
 	

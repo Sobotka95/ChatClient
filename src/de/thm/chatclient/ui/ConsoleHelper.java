@@ -40,15 +40,15 @@ public class ConsoleHelper {
 			try {
 				
 				System.out.print("Eingabe: ");
-			
 				choice = Integer.parseInt(in.next() + in.nextLine());
+				System.out.println();
 				
 				if(choice < 1 || choice > entries.length) {
 					throw new InputMismatchException();
 				}
 								
 			} catch (InputMismatchException ex) {
-				error("Ungültige Eingabe");	
+				error("UngÃ¼ltige Eingabe");	
 				success = false;
 			} catch (NoSuchElementException ex) {		
 				error("NoSuchElementException: " + ex.getMessage());		
@@ -85,24 +85,29 @@ public class ConsoleHelper {
 			
 			if(elements.isEmpty()) {
 				System.out.println("Keine Elemente vorhanden...");
-				sleep();
-				return 0;
 			}
-	
+			
+			System.out.println("[" + (elements.size() + 1) + "] Abbrechen");
 			System.out.println();
 			
 			try {
 				
 				System.out.print("Eingabe: ");
-			
 				choice = Integer.parseInt(in.next() + in.nextLine());
+				System.out.println();
 				
-				if(choice < 1 || choice > elements.size()) {
+				// input validation
+				if(choice < 1 || choice > elements.size() + 1) {
 					throw new InputMismatchException();
+				}
+				
+				// Check cancel element
+				if(choice == elements.size() + 1) { 
+					choice = 0;
 				}
 								
 			} catch (InputMismatchException ex) {
-				error("Ungültige Eingabe");	
+				error("UngÃ¼ltige Eingabe");	
 				success = false;
 			} catch (NoSuchElementException ex) {		
 				error("NoSuchElementException: " + ex.getMessage());		
@@ -146,7 +151,8 @@ public class ConsoleHelper {
 		String input = "";
 		try {
 			System.out.print(description + ": ");
-			input = in.next() + in.nextLine();	
+			input = in.next() + in.nextLine();
+			System.out.println();
 		} catch (Exception ex) {
 			error(ex.getMessage());
 		} finally {
@@ -156,7 +162,9 @@ public class ConsoleHelper {
 	}
 	
 	public static void login() {
+		
 		System.out.println("Anmeldung");
+		System.out.println();
 		
 		try {
 			boolean loginSucceeded;
@@ -170,7 +178,7 @@ public class ConsoleHelper {
 			
 				loginSucceeded = AuthenticationRepository.getInstance().loginCheck();
 			
-				if (!loginSucceeded) System.out.println("Unter den eigegeben Daten konnte kein Benutzer gefunden werden überprüfen sie die Eingabe und die Internet Verbindung.");
+				if (!loginSucceeded) System.out.println("Unter den eigegeben Daten konnte kein Benutzer gefunden werden ï¿½berprï¿½fen sie die Eingabe und die Internet Verbindung.");
 			}
 			while (!loginSucceeded);
 			
@@ -197,6 +205,51 @@ public class ConsoleHelper {
 		} catch(IOException ex) {
 			error("IOException: " + ex.getMessage());
 		}
+	}
+	
+	public static boolean exit() {
+		
+		boolean exit = false;
+		boolean success = false;
+		
+		do {
+			
+			success = true;		
+				
+			try {
+				
+				System.out.println("Wollen Sie wirklich das Programm beenden?");
+				System.out.println();
+				System.out.print("[J]a oder [N]ein : ");
+				
+				String input = in.next() + in.nextLine();
+				
+				if(input.toLowerCase().equals("j")) {
+					exit = true;
+				} else if(input.toLowerCase().equals("n")) {
+					exit = false;
+				} else {
+					throw new InputMismatchException();
+				}
+								
+			} catch (InputMismatchException ex) {
+				error("UngÃ¼ltige Eingabe");	
+				success = false;
+			} catch (NoSuchElementException ex) {		
+				error("NoSuchElementException: " + ex.getMessage());		
+				success = false;
+			} catch (IllegalStateException ex) {		
+				error("IllegalStateException: " + ex.getMessage());		
+				success = false;
+			} catch (Exception ex) {		
+				error("Exception: " + ex.getMessage());			
+				success = false;
+			}
+			
+		} while(!success);	
+		
+		return exit;
+		
 	}
 	
 }

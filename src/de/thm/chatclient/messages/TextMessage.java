@@ -16,7 +16,7 @@ public class TextMessage extends Message {
 				
 	@Override
 	public String toString() {
-		return "Text Nachicht "
+		return "Textnachicht "
 				+ super.toString()
 				+ ", Nachichten inhalt: " + getText();
 	}

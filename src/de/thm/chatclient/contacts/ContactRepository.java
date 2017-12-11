@@ -30,8 +30,8 @@ public class ContactRepository {
 	
 	public List<Contact> getAllContacts(Authentication auth) throws Exception {
 		List<Contact> contacts = new ArrayList<Contact>();
-		contacts.addAll(getAllGroups());
 		contacts.addAll(getAllPersons(auth));
+		contacts.addAll(getAllGroups());	
 		return contacts;
 	}
 	
@@ -75,7 +75,7 @@ public class ContactRepository {
 		
 		if(group == null) {
 			// Group with this name does not exist
-			throw new Exception("A Group with this name does not exists");
+			throw new Exception("Eine Gruppe mit diesem Namen existiert nicht");
 		}
 		
 		groups.remove(group);
@@ -85,7 +85,7 @@ public class ContactRepository {
 		
 		if(this.getGroupByName(group.getName()) != null) {
 			// Group with this name already exists
-			throw new Exception("A Group with this name already exists");
+			throw new Exception("Eine Gruppe mit diesem Namen existiert bereits");
 		}
 		groups.add(group);
 	}

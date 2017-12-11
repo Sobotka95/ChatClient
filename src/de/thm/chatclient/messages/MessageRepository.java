@@ -21,6 +21,7 @@ import de.thm.oop.chat.base.server.*;
  *
  */
 public class MessageRepository {
+	
 	private static final String SEPERATOR = "\\|";
 	private static final String TEXT_MG = "txt";
 	private static final String IMAGE_MG = "img";
@@ -98,7 +99,6 @@ public class MessageRepository {
 		return userMessages;
 	}
 	
-	
 	private Message parse(Authentication auth, String inputString) {
 		Message message = null;
 		
@@ -159,7 +159,6 @@ public class MessageRepository {
 		return message; 
 	}
 	
-	
 	private void sendTextMessage(Authentication auth, String receiver, String text) throws IOException, IllegalArgumentException {
 		
 
@@ -171,7 +170,6 @@ public class MessageRepository {
 									receiver, 
 									text);
 	}
-	
 	
 	private void sendImageMessage(Authentication auth, String receiver, RawImage image) throws Exception {
 		BasicTHMChatServer thmServer = new BasicTHMChatServer();
@@ -189,4 +187,5 @@ public class MessageRepository {
 			//Noch was machen
 		}
 	}
+	
 }
