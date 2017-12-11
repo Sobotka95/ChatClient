@@ -13,7 +13,7 @@ import de.thm.chatclient.contacts.Contact;
  */
 public abstract class Message {
 
-	private Contact sender;
+	private Contact transmitter;
 	private Contact receiver;
 	private long timstamp;
 	private String direction;
@@ -33,17 +33,18 @@ public abstract class Message {
 	public String toString() {
 		return  "Zeit: " + timstampConvert(getTimstamp()) 
 				+ ", Richtung: " + getDirection() 
+				+ ", Sender: " + getTransmitter()
 				+ ", Empfänger: " + getReceiver();
 	}
 	
 	
 	//Getters and Setters
-	public Contact getSender() {
-		return sender;
+	public Contact getTransmitter() {
+		return transmitter;
 	}
 
-	public void setSender(Contact sender) {
-		this.sender = sender;
+	public void setTransmitter(Contact transmitter) {
+		this.transmitter = transmitter;
 	}
 
 	public Contact getReceiver() {

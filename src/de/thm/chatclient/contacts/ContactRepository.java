@@ -6,7 +6,7 @@ import java.util.List;
 import de.thm.chatclient.security.Authentication;
 import de.thm.oop.chat.base.server.*;
 
-public class ContactRepository implements ContactRepositoryInterface {
+public class ContactRepository {
 	
 	private static ContactRepository instance;
 	

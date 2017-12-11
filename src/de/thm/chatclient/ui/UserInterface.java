@@ -1,6 +1,7 @@
 package de.thm.chatclient.ui;
 
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.List;
 
 import de.thm.chatclient.contacts.*;
@@ -12,6 +13,16 @@ public class UserInterface {
 	public static void main(String args[]) {
 		
 		ConsoleHelper.login();
+		
+		try {
+			ContactRepository.getInstance().addGroup(new Group("Testgruppe"));
+			ContactRepository.getInstance().getGroupByName("Testgruppe").addMember(ContactRepository.getInstance().getPersonByName(AuthenticationRepository.getInstance().getAuth(), "julian.sobotka"));
+			ContactRepository.getInstance().getGroupByName("Testgruppe").addMember(ContactRepository.getInstance().getPersonByName(AuthenticationRepository.getInstance().getAuth(), "ralf.merhof"));
+		} catch (Exception e) {
+			// TODO Auto-generated catch block
+			ConsoleHelper.error(e.getMessage());
+		}
+		
 		mainMenu();
 		
 	}
@@ -55,16 +66,19 @@ public class UserInterface {
 			
 			int choice = 0;
 			
-			choice = ConsoleHelper.menu("Chatmenü", new String[] {"Chat öffnen", "Gruppennachricht senden", "Zurück"});
+			choice = ConsoleHelper.menu("Chatmenü", new String[] {"Nachrichten anzeigen", "Nachricht schreiben", "Zurück"});
 		
 			switch(choice) {
 				case 1: {
-					openChat();
+					showMessages();
 				} break;
 				case 2: {
-					sendGroupMessage();
+					sendMessage();
 				} break;
 				case 3: {
+					sendGroupMessage();
+				} break;
+				case 4: {
 					back = true;
 				}
 			}
@@ -73,7 +87,7 @@ public class UserInterface {
 		
 	}
 		
-	private static void openChat() {
+	private static void showMessages() {
 		
 		try {
 			
@@ -84,15 +98,62 @@ public class UserInterface {
 				return;
 			}
 				
-			Person chatPartner = persons.get(choice - 1);
+			Person person = persons.get(choice - 1);
 			
-			List<Message> messages = MessageRepository.getInstance().getAllMessages(AuthenticationRepository.getInstance().getAuth(), 1);
+			List<Message> messages = MessageRepository.getInstance().getMessagesByPerson(AuthenticationRepository.getInstance().getAuth(), person.getName(), 1);
 			ConsoleHelper.listView("Nachrichtenverlauf", messages) ;	
-			
 			
 		} catch (Exception e) {
 			ConsoleHelper.error(e.getMessage());
 		}
+	}
+	
+	private static void sendMessage() {
+	
+		try {
+			
+			int choice = 0;
+			
+			List<Contact> contacts = ContactRepository.getInstance().getAllContacts(AuthenticationRepository.getInstance().getAuth());
+			choice = ConsoleHelper.listChoice("Empfänger auswählen", contacts) ;
+			
+			if(choice <= 0) {
+				return;
+			}
+			
+			Contact receiver = contacts.get(choice - 1);
+			
+			choice = ConsoleHelper.listChoice("Bild oder Textnachricht?", Arrays.asList("Bildnachricht", "Textnachricht"));
+			
+			Message message;
+			
+			if(choice == 1) {
+				
+				String imagePath = ConsoleHelper.enterString("Geben Sie den Bildpfad an");
+				
+				ImageMessage imageMessage = new ImageMessage();
+				imageMessage.setImage(new RawImage(imagePath));
+				message = imageMessage;
+				
+			} else if(choice == 2) {
+				
+				String text = ConsoleHelper.enterString("Geben Sie die Nachricht ein");
+				
+				TextMessage textMessage = new TextMessage();
+				textMessage.setText(text);
+				message = textMessage;
+				
+			} else {
+				return;
+			}
+			
+			message.setReceiver(receiver);		
+			MessageRepository.getInstance().sendMessage(AuthenticationRepository.getInstance().getAuth(), message);
+			
+		} catch (Exception e) {
+			ConsoleHelper.error(e.getMessage());
+		}
+		
 	}
 	
 	private static void sendGroupMessage() {

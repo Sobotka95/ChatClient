@@ -41,7 +41,7 @@ public class ConsoleHelper {
 				
 				System.out.print("Eingabe: ");
 			
-				choice = Integer.parseInt(in.next());
+				choice = Integer.parseInt(in.next() + in.nextLine());
 				
 				if(choice < 1 || choice > entries.length) {
 					throw new InputMismatchException();
@@ -95,7 +95,7 @@ public class ConsoleHelper {
 				
 				System.out.print("Eingabe: ");
 			
-				choice = Integer.parseInt(in.next());
+				choice = Integer.parseInt(in.next() + in.nextLine());
 				
 				if(choice < 1 || choice > elements.size()) {
 					throw new InputMismatchException();
@@ -141,6 +141,19 @@ public class ConsoleHelper {
 							
 	}
 	
+	public static String enterString(String description) {
+		
+		String input = "";
+		try {
+			System.out.print(description + ": ");
+			input = in.next() + in.nextLine();	
+		} catch (Exception ex) {
+			error(ex.getMessage());
+		} finally {
+			return input;
+		}
+		
+	}
 	
 	public static void login() {
 		System.out.println("Anmeldung");
@@ -150,9 +163,9 @@ public class ConsoleHelper {
 			
 			do{
 				System.out.print("Benutzername: ");
-				String username = in.next();
+				String username = in.next() + in.nextLine();
 				System.out.print("Passwort: ");
-				String password = in.next();
+				String password = in.next() + in.nextLine();
 				AuthenticationRepository.getInstance().setAuth(new Authentication(username, password));
 			
 				loginSucceeded = AuthenticationRepository.getInstance().loginCheck();

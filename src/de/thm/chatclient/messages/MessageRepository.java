@@ -84,7 +84,17 @@ public class MessageRepository {
 		return parsedMessenges;
 	}
 	
-
+	public List<Message> getMessagesByPerson(Authentication auth, String name, long since) throws Exception {
+		List<Message> allMessages = getAllMessages(auth, since);
+		List<Message> userMessages = new ArrayList<Message>();
+		for(int i=0; i<allMessages.size(); i++) {
+			if(allMessages.get(i).getReceiver().getName().equals(name) || allMessages.get(i).getTransmitter().getName().equals(name)) {
+				userMessages.add(allMessages.get(i));
+			}
+		}
+		return userMessages;
+	}
+	
 	
 	private Message parse(Authentication auth, String inputString) {
 		Message message = null;
@@ -119,14 +129,14 @@ public class MessageRepository {
 			}
 
 			if(message.getDirection().equals("in")) {
-				message.setSender(contact);
+				message.setTransmitter(contact);
 				message.setReceiver(ContactRepository
 					.getInstance()
 						.getPersonByName(
 										auth, 
 										auth.getUsername()));
 			} else {
-				message.setSender(ContactRepository
+				message.setTransmitter(ContactRepository
 						.getInstance()
 							.getPersonByName(
 											auth, 
