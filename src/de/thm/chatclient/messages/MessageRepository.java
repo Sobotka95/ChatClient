@@ -49,7 +49,7 @@ public class MessageRepository {
 	
 
 	
-	public Message parse(String inputString) {
+	private Message parse(String inputString) {
 		Message message = null;
 		
 		try {
@@ -100,6 +100,7 @@ public class MessageRepository {
 			thmServer.sendImageMessage(auth.getUsername(), auth.getPassword(), 
 										imageMessage.getReceiver(), imageMessage.getImage().getMimeType(),
 										data);
+			
 			data.close();
 		} catch (FileNotFoundException e) {
 			System.out.println(e.toString());

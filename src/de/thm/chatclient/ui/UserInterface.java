@@ -25,14 +25,14 @@ public class UserInterface {
 		*/
 		
 		
-		ImageMessage imageMessage = new ImageMessage();
+		/*ImageMessage imageMessage = new ImageMessage();
 		imageMessage.setReceiver("julian.sobotka");
 		try {
 			imageMessage.setImage(new RawImage("C:\\Users\\Merhof\\Desktop\\Test.bmp"));
 			messageRepository.sendMessage(authenticationRepository.getAuth(), imageMessage);
 		} catch (FileNotFoundException e) {
 			System.out.println("Das Bild konnte nicht gefunden werden!");
-		}
+		}*/
 				
 				
 		for (Message message : messageRepository.getAllMessages(authenticationRepository.getAuth(), 1)){

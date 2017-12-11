@@ -4,6 +4,8 @@ import java.text.SimpleDateFormat;
 import java.util.Date;
 import java.util.TimeZone;
 
+import de.thm.chatclient.contacts.Contact;
+
 /**
  * This is the upper class message.
  * @author Team_F (Julian S, Ralf M, Simon W)
@@ -11,12 +13,12 @@ import java.util.TimeZone;
  */
 public abstract class Message {
 
-	private String sender;
-	private String receiver;
+	private Contact sender;
+	private Contact receiver;
 	private long timstamp;
 	private String direction;
-		
-
+	
+	
 	public static String timstampConvert(long timestamp) {
 		Date date = new Date(timestamp); 
 		
@@ -36,26 +38,25 @@ public abstract class Message {
 	
 	
 	//Getters and Setters
-	public String getSender() {
+	public Contact getSender() {
 		return sender;
 	}
 
-	public void setSender(String sender) {
+	public void setSender(Contact sender) {
 		this.sender = sender;
 	}
 
-	public String getReceiver() {
+	public Contact getReceiver() {
 		return receiver;
 	}
 
-	public void setReceiver(String receiver) {
+	public void setReceiver(Contact receiver) {
 		this.receiver = receiver;
 	}
-
+	
 	public long getTimstamp() {
 		return timstamp;
 	}
-
 	public void setTimstamp(long timstamp) {
 		this.timstamp = timstamp;
 	}
