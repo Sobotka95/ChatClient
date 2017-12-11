@@ -24,6 +24,7 @@ public class ContactRepository implements ContactRepositoryInterface {
 		return contacts;
 	}
 	
+	
 	public List<Person> getAllPersons(Authentication auth) throws Exception {
 		List<Person> persons = new ArrayList<Person>();
 		for(String name: basicTHMChatServer.getUsers(auth.getUsername(), auth.getPassword())) {

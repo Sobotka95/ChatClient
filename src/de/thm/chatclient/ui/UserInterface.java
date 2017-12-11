@@ -16,21 +16,54 @@ import de.thm.chatclient.security.*;
 
 public class UserInterface {
 	
-	private static final String menuLine = "-------------------------------";
-	private static final String errorLine = "- ! - ! - ! - ! - ! - ! - ! - ! -";
+
 	
 	private static AuthenticationRepository authenticationRepository = new AuthenticationRepository();
 	private static ContactRepository contactRepository = new ContactRepository();
 	private static MessageRepository messageRepository = new MessageRepository();
 	
-	private static Scanner in = new Scanner(System.in);
-	
 	public static void main(String[] args) {
-		loginDialog();
-		mainMenu();
+		//loginDialog();
+		//mainMenu();
+		
+	}
+	
+
+	
+	private static Authentication showLogin() {
+		return new Authentication("","");
+	}
+	
+	
+	
+	private static boolean showExit() {
+		return true;
 	}
 	
 	private static void mainMenu() {
+		
+		boolean exit;
+		
+		int choice = ConsoleHelper.buildMenu("Hauptmenü", new String[]{"Chatten", "Kontakte", "Neu anmelden", "Beenden" });
+		
+		switch(choice) {
+		case 1: {
+			chatMenu();
+		} break;
+		case 2: {
+			contactMenu();
+		} break;
+		case 3: {
+			loginDialog();	
+		} break;
+		case 4: {
+			exit = exitDialog();
+		} break;
+		}
+		
+	}
+	
+	/*private static void mainMenu() {
 		
 		boolean exit = false;
 
@@ -87,7 +120,7 @@ public class UserInterface {
 		
 		exit();
 		
-	}
+	}*/
 
 	private static void chatMenu() {
 		
@@ -439,25 +472,7 @@ public class UserInterface {
 		
 	}
 		
-	private static void error(String message) {
-		
-		System.out.println();
-		System.out.println(errorLine);
-		System.out.println(message);
-		System.out.println(errorLine);
-		System.out.println();
-		
-	}
 	
-	private static void consoleWait() {
-		try {
-			System.out.println();
-			System.out.println("Beliebige Taste zum Fortfahren: ");
-			System.in.read();
-		} catch(IOException ex) {
-			error("IOException: " + ex.getMessage());
-		}
-	}
 	
 	private static void exit() {
 		
