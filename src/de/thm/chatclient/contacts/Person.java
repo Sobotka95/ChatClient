@@ -54,7 +54,20 @@ public class Person extends Contact {
 	
 	@Override
 	public String toString() {
-		return "(Person) " + super.toString();
+		
+		String nickname = "";
+		String username = getName();
+		
+		username = username.replace('-', '.');
+		username = username.replace("oe", "ö");
+		username = username.replace("ae", "ä");
+		username = username.replace("ue", "ü");
+		
+		for (String element : username.split("\\.")) {
+			nickname += element.substring(0, 1).toUpperCase() + element.substring(1) + " ";
+		}
+		
+		return "(Person) " + nickname.trim();
 	}
 	
 }
