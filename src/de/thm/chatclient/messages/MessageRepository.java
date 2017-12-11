@@ -25,6 +25,16 @@ public class MessageRepository {
 	private static final String TEXT_MG = "txt";
 	private static final String IMAGE_MG = "img";
 	
+	private static MessageRepository instance;
+	
+	
+	public static MessageRepository getInstance() {
+		if(instance == null) {
+			instance = new MessageRepository();
+		}
+		return instance;
+	}
+	
 	/**
 	 * Sends a message.
 	 * @param auth 
