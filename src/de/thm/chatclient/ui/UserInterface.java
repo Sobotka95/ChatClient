@@ -76,9 +76,6 @@ public class UserInterface {
 					sendMessage();
 				} break;
 				case 3: {
-					sendGroupMessage();
-				} break;
-				case 4: {
 					back = true;
 				}
 			}
@@ -100,7 +97,7 @@ public class UserInterface {
 				
 			Person person = persons.get(choice - 1);
 			
-			List<Message> messages = MessageRepository.getInstance().getMessagesByPerson(AuthenticationRepository.getInstance().getAuth(), person.getName(), 1);
+			List<Message> messages = MessageRepository.getInstance().getMessagesByPerson(AuthenticationRepository.getInstance().getAuth(), person.getName());
 			ConsoleHelper.listView("Nachrichtenverlauf", messages) ;	
 			
 		} catch (Exception e) {
@@ -149,25 +146,6 @@ public class UserInterface {
 			
 			message.setReceiver(receiver);		
 			MessageRepository.getInstance().sendMessage(AuthenticationRepository.getInstance().getAuth(), message);
-			
-		} catch (Exception e) {
-			ConsoleHelper.error(e.getMessage());
-		}
-		
-	}
-	
-	private static void sendGroupMessage() {
-		
-		try {
-			
-			List<Group> groups = ContactRepository.getInstance().getAllGroups();
-			int choice = ConsoleHelper.listChoice("Gruppe auswählen", groups) ;
-			
-			if(choice <= 0) {
-				return;
-			}
-			
-			Group group = groups.get(choice - 1);
 			
 		} catch (Exception e) {
 			ConsoleHelper.error(e.getMessage());

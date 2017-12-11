@@ -15,11 +15,11 @@ public abstract class Message {
 
 	private Contact transmitter;
 	private Contact receiver;
-	private long timstamp;
+	private long timestamp;
 	private String direction;
 	
 	
-	public static String timstampConvert(long timestamp) {
+	public static String timestampConvert(long timestamp) {
 		Date date = new Date(timestamp); 
 		
 		SimpleDateFormat sdf;
@@ -31,7 +31,7 @@ public abstract class Message {
 	
 	@Override
 	public String toString() {
-		return  "Zeit: " + timstampConvert(getTimstamp()) 
+		return  "Zeit: " + timestampConvert(getTimestamp()) 
 				+ ", Richtung: " + getDirection() 
 				+ ", Sender: " + getTransmitter()
 				+ ", Empfänger: " + getReceiver();
@@ -55,11 +55,11 @@ public abstract class Message {
 		this.receiver = receiver;
 	}
 	
-	public long getTimstamp() {
-		return timstamp;
+	public long getTimestamp() {
+		return timestamp;
 	}
-	public void setTimstamp(long timstamp) {
-		this.timstamp = timstamp;
+	public void setTimestamp(long timestamp) {
+		this.timestamp = timestamp;
 	}
 
 	public String getDirection() {

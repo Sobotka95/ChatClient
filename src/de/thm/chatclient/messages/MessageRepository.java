@@ -24,6 +24,9 @@ public class MessageRepository {
 	private static final String SEPERATOR = "\\|";
 	private static final String TEXT_MG = "txt";
 	private static final String IMAGE_MG = "img";
+	private static final String DIRECTION_IN = "in";
+	private static final String DIRECTION_OUT = "out";
+	private static final long TIMESTAMP = 1;
 	
 	private static MessageRepository instance;
 	
@@ -71,11 +74,11 @@ public class MessageRepository {
 		
 	}
 	
-	public List<Message> getAllMessages(Authentication auth, long since) throws Exception {
+	public List<Message> getAllMessages(Authentication auth) throws Exception {
 		BasicTHMChatServer thmServer = new BasicTHMChatServer();
 		
 		ArrayList<Message> parsedMessenges = new ArrayList<Message>();
-		String[] messages = thmServer.getMessages(auth.getUsername(), auth.getPassword(), since);
+		String[] messages = thmServer.getMessages(auth.getUsername(), auth.getPassword(), TIMESTAMP);
 		
 		for (String message : messages) {
 			parsedMessenges.add(parse(auth, message));
@@ -84,8 +87,8 @@ public class MessageRepository {
 		return parsedMessenges;
 	}
 	
-	public List<Message> getMessagesByPerson(Authentication auth, String name, long since) throws Exception {
-		List<Message> allMessages = getAllMessages(auth, since);
+	public List<Message> getMessagesByPerson(Authentication auth, String name) throws Exception {
+		List<Message> allMessages = getAllMessages(auth);
 		List<Message> userMessages = new ArrayList<Message>();
 		for(int i=0; i<allMessages.size(); i++) {
 			if(allMessages.get(i).getReceiver().getName().equals(name) || allMessages.get(i).getTransmitter().getName().equals(name)) {
@@ -116,7 +119,7 @@ public class MessageRepository {
 				message = imageMessage;
 			}
 			
-			message.setTimstamp(Long.parseLong(parts[0]));
+			message.setTimestamp(Long.parseLong(parts[0]));
 			message.setDirection(parts[1]);
 			
 			Contact contact = ContactRepository
@@ -128,14 +131,14 @@ public class MessageRepository {
 				contact = new Person(parts[2]);
 			}
 
-			if(message.getDirection().equals("in")) {
+			if(message.getDirection().equals(DIRECTION_IN)) {
 				message.setTransmitter(contact);
 				message.setReceiver(ContactRepository
 					.getInstance()
 						.getPersonByName(
 										auth, 
 										auth.getUsername()));
-			} else {
+			} else if (message.getDirection().equals(DIRECTION_OUT)) {
 				message.setTransmitter(ContactRepository
 						.getInstance()
 							.getPersonByName(
