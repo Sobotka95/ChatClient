@@ -1,11 +1,18 @@
 package de.thm.chatclient.messages;
 
+import java.io.File;
 import java.io.FileInputStream;
 import java.io.FileNotFoundException;
 import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
+
+import de.thm.chatclient.contacts.Contact;
+import de.thm.chatclient.contacts.ContactRepository;
+import de.thm.chatclient.contacts.Group;
+import de.thm.chatclient.contacts.Person;
 import de.thm.chatclient.security.Authentication;
+import de.thm.chatclient.security.AuthenticationRepository;
 import de.thm.oop.chat.base.server.*;
 
 /**
@@ -26,13 +33,33 @@ public class MessageRepository {
 	 */
 	public void sendMessage(Authentication auth, Message message) throws Exception {
 		
-		if (message instanceof TextMessage) {
-			sendTextMessage(auth, (TextMessage) message); 		
-		} else if (message instanceof ImageMessage) {
-			sendImageMessage(auth, (ImageMessage) message);
+
+		
+		if(message.getReceiver() instanceof Group) {
+			
+			for(Person member: ((Group)message.getReceiver()).getMembers()) {
+				
+				sendSingleMessage(auth, member, message);
+				
+			}
+			
+		} else {
+			
+			sendSingleMessage(auth, (Person)message.getReceiver(), message);
 		}
+		
+		
 	}
 	
+	public void sendSingleMessage(Authentication auth, Person receiver, Message message) throws Exception {
+		
+		if (message instanceof TextMessage) {
+			sendTextMessage(auth, receiver.getName(), ((TextMessage) message).getText()); 		
+		} else if (message instanceof ImageMessage) {
+			sendImageMessage(auth, receiver.getName(), (RawImage)((ImageMessage) message).getImage());
+		}
+		
+	}
 	
 	public List<Message> getAllMessages(Authentication auth, long since) throws Exception {
 		BasicTHMChatServer thmServer = new BasicTHMChatServer();
@@ -41,7 +68,7 @@ public class MessageRepository {
 		String[] messages = thmServer.getMessages(auth.getUsername(), auth.getPassword(), since);
 		
 		for (String message : messages) {
-			parsedMessenges.add(parse(message));
+			parsedMessenges.add(parse(auth, message));
 		}
 					
 		return parsedMessenges;
@@ -49,7 +76,7 @@ public class MessageRepository {
 	
 
 	
-	private Message parse(String inputString) {
+	private Message parse(Authentication auth, String inputString) {
 		Message message = null;
 		
 		try {
@@ -71,7 +98,36 @@ public class MessageRepository {
 			
 			message.setTimstamp(Long.parseLong(parts[0]));
 			message.setDirection(parts[1]);
-			message.setReceiver(parts[2]);
+			
+			Contact contact = ContactRepository
+					.getInstance()
+						.getPersonByName(
+										auth, 
+										parts[2]);
+			if(contact == null) {
+				contact = new Person(parts[2]);
+			}
+
+			if(message.getDirection().equals("in")) {
+				message.setSender(contact);
+				message.setReceiver(ContactRepository
+					.getInstance()
+						.getPersonByName(
+										auth, 
+										auth.getUsername()));
+			} else {
+				message.setSender(ContactRepository
+						.getInstance()
+							.getPersonByName(
+											auth, 
+											auth.getUsername()));
+				message.setReceiver(contact);
+			}
+			
+			
+			
+			
+					
 					
 		} catch (Exception e) {
 			System.out.println(e.toString());
@@ -81,24 +137,27 @@ public class MessageRepository {
 	}
 	
 	
-	private void sendTextMessage(Authentication auth, TextMessage textMessage) throws IOException, IllegalArgumentException {
+	private void sendTextMessage(Authentication auth, String receiver, String text) throws IOException, IllegalArgumentException {
+		
+
+		
 		BasicTHMChatServer thmServer = new BasicTHMChatServer();
 		
 		thmServer.sendTextMessage(auth.getUsername(), 
 									auth.getPassword(), 
-									textMessage.getReceiver(), 
-									textMessage.getText());
+									receiver, 
+									text);
 	}
 	
 	
-	private void sendImageMessage(Authentication auth, ImageMessage imageMessage) throws Exception {
+	private void sendImageMessage(Authentication auth, String receiver, RawImage image) throws Exception {
 		BasicTHMChatServer thmServer = new BasicTHMChatServer();
 		FileInputStream data; 
 		try {
-			data = new FileInputStream(((RawImage)imageMessage.getImage()).getFile());
+			data = new FileInputStream(image.getFile());
 			
 			thmServer.sendImageMessage(auth.getUsername(), auth.getPassword(), 
-										imageMessage.getReceiver(), imageMessage.getImage().getMimeType(),
+										receiver, image.getMimeType(),
 										data);
 			
 			data.close();

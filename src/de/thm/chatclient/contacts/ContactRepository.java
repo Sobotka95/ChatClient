@@ -8,9 +8,20 @@ import de.thm.oop.chat.base.server.*;
 
 public class ContactRepository implements ContactRepositoryInterface {
 	
+	private static ContactRepository instance;
+	
 	BasicTHMChatServer basicTHMChatServer;
 	
 	private List<Group> groups;
+	
+	private List<Person> persons;
+	
+	public static ContactRepository getInstance() {
+		if(instance == null) {
+			instance = new ContactRepository();
+		}
+		return instance;
+	}
 	
 	public ContactRepository() {
 		basicTHMChatServer = new BasicTHMChatServer();
@@ -24,28 +35,25 @@ public class ContactRepository implements ContactRepositoryInterface {
 		return contacts;
 	}
 	
-	
 	public List<Person> getAllPersons(Authentication auth) throws Exception {
-		List<Person> persons = new ArrayList<Person>();
-		for(String name: basicTHMChatServer.getUsers(auth.getUsername(), auth.getPassword())) {
-			persons.add(new Person(name));
+		
+		if(persons == null) {
+			persons = new ArrayList<Person>();
+			for(String name: basicTHMChatServer.getUsers(auth.getUsername(), auth.getPassword())) {
+				persons.add(new Person(name));
+			}
 		}
 		return persons;
 	}
 	
 	public Person getPersonByName(Authentication auth, String name) throws Exception {
 		List<Person> persons = getAllPersons(auth);
-		int index = -1;
 		for(int i=0; i<persons.size(); i++) {
 			if(persons.get(i).getName().equals(name)) {
-				index = i;
+				return persons.get(i);
 			}
 		}
-		if(index != -1) {
-			return persons.get(index);
-		} else {
-			return null;
-		}
+		return null;
 	}
 	
 	public List<Group> getAllGroups() {
@@ -53,17 +61,12 @@ public class ContactRepository implements ContactRepositoryInterface {
 	}
 	
 	public Group getGroupByName(String name) {
-		int index = -1;
 		for(int i=0; i<groups.size(); i++) {
 			if(groups.get(i).getName().equals(name)) {
-				index = i;
+				return groups.get(i);
 			}
 		}
-		if(index != -1) {
-			return groups.get(index);
-		} else {
-			return null;
-		}
+		return null;
 	}
 	
 	public void removeGroup(String name) throws Exception {

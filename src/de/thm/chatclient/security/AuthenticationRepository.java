@@ -4,7 +4,16 @@ import de.thm.oop.chat.base.server.*;
 
 public class AuthenticationRepository {
 	
+	private static AuthenticationRepository instance;
+	
 	private Authentication auth;
+	
+	public static AuthenticationRepository getInstance() {
+		if(instance == null) {
+			instance = new AuthenticationRepository();
+		}
+		return instance;
+	}
 	
 	/**
 	 * Function checks the connection to the server with the given parameters.
