@@ -17,17 +17,12 @@ public class Group extends Contact {
 	}
 	
 	public Person getMemberByName(String membername) {
-		int index = -1;
 		for(int i=0; i<members.size(); i++) {
 			if(members.get(i).getName().equals(membername)) {
-				index = i;
+				return members.get(i);
 			}
 		}
-		if(index != -1) {
-			return members.get(index);
-		} else {
-			return null;
-		}
+		return null;
 	}
 	
 	public void addMember(Person member) throws Exception {

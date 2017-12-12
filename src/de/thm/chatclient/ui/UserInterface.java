@@ -9,15 +9,15 @@ import de.thm.chatclient.security.*;
 
 public class UserInterface {
 	
-	public static void main(String args[]) {
+	public static void main(String[] args) {
 		
 		ConsoleHelper.message("Willkommen im ChatClient der Gruppe F");
 		
 		ConsoleHelper.login();
 		mainMenu();
 		
-		ConsoleHelper.message("Anwendung wurde beendet");
-		
+		ConsoleHelper.message("Anwendung wurde beendet");	
+		ConsoleHelper.close();
 	}
 	
 	private static void mainMenu() {
@@ -178,8 +178,13 @@ public class UserInterface {
 			
 			if(choice == 1) {
 				
+
 				String text = ConsoleHelper.enterString("Geben Sie die Nachricht ein");
 				
+				if(text.contains("|")) {
+					throw new Exception("Das Zeichen '|' darf in der Nachricht nicht enthalten sein.");
+				}
+
 				TextMessage textMessage = new TextMessage();
 				textMessage.setText(text);
 				message = textMessage;

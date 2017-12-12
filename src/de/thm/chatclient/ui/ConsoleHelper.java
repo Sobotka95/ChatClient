@@ -13,7 +13,7 @@ import de.thm.chatclient.security.AuthenticationRepository;
 public class ConsoleHelper {
 	
 	private static final String menuLine = "------------------------------------------------";
-	private static final String errorLine = "- ! - ! - ! - ! - ! - ! - ! - ! -";
+	private static final String errorLine = "- ! - ! - ! - ! - ! - ! - ! - ! - ! - ! - ! - ! - ! -";
 	
 	private static Scanner in = new Scanner(System.in);
 	
@@ -167,25 +167,20 @@ public class ConsoleHelper {
 		System.out.println("Anmeldung");
 		System.out.println();
 		
-		try {
-			boolean loginSucceeded;
-			
-			do{
-				System.out.print("Benutzername: ");
-				String username = in.next() + in.nextLine();
-				System.out.print("Passwort: ");
-				String password = in.next() + in.nextLine();
-				AuthenticationRepository.getInstance().setAuth(new Authentication(username, password));
-			
-				loginSucceeded = AuthenticationRepository.getInstance().loginCheck();
-			
-				if (!loginSucceeded) System.out.println("Unter den eigegeben Daten konnte kein Benutzer gefunden werden �berpr�fen sie die Eingabe und die Internet Verbindung.");
-			}
-			while (!loginSucceeded);
-			
-		} catch (Exception ex) {
-			
-		}
+		boolean loginSucceeded;
+		
+		do {
+			System.out.print("Benutzername: ");
+			String username = in.next() + in.nextLine();
+			System.out.print("Passwort: ");
+			String password = in.next() + in.nextLine();
+			AuthenticationRepository.getInstance().setAuth(new Authentication(username, password));
+		
+			loginSucceeded = AuthenticationRepository.getInstance().loginCheck();
+		
+			if (!loginSucceeded) System.out.println("Unter den eigegeben Daten konnte kein Benutzer gefunden werden �berpr�fen sie die Eingabe und die Internet Verbindung.");
+		} while (!loginSucceeded);
+		
 	}
 	
 	public static void message(String message) {
@@ -260,6 +255,18 @@ public class ConsoleHelper {
 		} while(!success);	
 		
 		return exit;
+		
+	}
+	
+	public static void close() {
+		
+		if(in != null) {
+			try {
+				in.close();
+			} catch(Exception ex) {
+				error(ex.getMessage());
+			}
+		}
 		
 	}
 	

@@ -49,21 +49,13 @@ public class MessageRepository {
 	 */
 	public void sendMessage(Authentication auth, Message message) throws Exception {
 		
-
-		
-		if(message.getReceiver() instanceof Group) {
-			
+		if(message.getReceiver() instanceof Group) {	
 			for(Person member: ((Group)message.getReceiver()).getMembers()) {
-				
 				sendSingleMessage(auth, member, message);
-				
 			}
-			
 		} else {
-			
 			sendSingleMessage(auth, (Person)message.getReceiver(), message);
 		}
-		
 		
 	}
 	
