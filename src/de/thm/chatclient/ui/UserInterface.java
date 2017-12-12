@@ -12,8 +12,12 @@ public class UserInterface {
 	
 	public static void main(String args[]) {
 		
+		ConsoleHelper.message("Willkommen im ChatClient der Gruppe F");
+		
 		ConsoleHelper.login();
 		mainMenu();
+		
+		ConsoleHelper.message("Anwendung wurde beendet");
 		
 	}
 	
@@ -43,9 +47,6 @@ public class UserInterface {
 			}
 			
 		} while(!exit);
-
-		System.out.println();
-		System.out.println("Anwendung wurde beendet");
 		
 	}
 	
@@ -172,7 +173,7 @@ public class UserInterface {
 			
 			Contact receiver = contacts.get(choice - 1);
 			
-			choice = ConsoleHelper.listChoice("Text- oder Buildnachricht?", Arrays.asList("Textnachricht", "Bildnachricht"));
+			choice = ConsoleHelper.listChoice("Text- oder Bildnachricht?", Arrays.asList("Textnachricht", "Bildnachricht"));
 			
 			Message message;
 			

@@ -12,7 +12,7 @@ import de.thm.chatclient.security.AuthenticationRepository;
 
 public class ConsoleHelper {
 	
-	private static final String menuLine = "-------------------------------";
+	private static final String menuLine = "------------------------------------------------";
 	private static final String errorLine = "- ! - ! - ! - ! - ! - ! - ! - ! -";
 	
 	private static Scanner in = new Scanner(System.in);
@@ -29,6 +29,7 @@ public class ConsoleHelper {
 			System.out.println();
 			System.out.println(menuLine);
 			System.out.println(title + " (Angemeldet als " + AuthenticationRepository.getInstance().getAuth().getUsername() + ")");
+			System.out.println(menuLine);
 			System.out.println();
 			
 			for(int i=0; i<entries.length; i++) {
@@ -84,7 +85,7 @@ public class ConsoleHelper {
 			}
 			
 			if(elements.isEmpty()) {
-				System.out.println("Keine Elemente vorhanden...");
+				System.out.println("Diese Liste ist leer...");
 			}
 			
 			System.out.println("[" + (elements.size() + 1) + "] Abbrechen");
@@ -137,7 +138,7 @@ public class ConsoleHelper {
 		}
 		
 		if(elements.isEmpty()) {
-			System.out.println("Keine Elemente vorhanden...");
+			System.out.println("Diese Liste ist leer...");
 		}
 
 		System.out.println();
@@ -185,6 +186,16 @@ public class ConsoleHelper {
 		} catch (Exception ex) {
 			
 		}
+	}
+	
+	public static void message(String message) {
+		
+		System.out.println();
+		System.out.println(menuLine);
+		System.out.println(message);
+		System.out.println(menuLine);
+		System.out.println();
+		
 	}
 	
 	public static void error(String message) {
