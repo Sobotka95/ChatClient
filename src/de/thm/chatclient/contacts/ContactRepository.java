@@ -23,7 +23,7 @@ public class ContactRepository {
 		return instance;
 	}
 	
-	public ContactRepository() {
+	private ContactRepository() {
 		basicTHMChatServer = new BasicTHMChatServer();
 		groups = new ArrayList<Group>();
 	}

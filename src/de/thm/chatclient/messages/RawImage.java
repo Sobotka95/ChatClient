@@ -13,7 +13,7 @@ public class RawImage extends Image {
 	private File file;
 
 	public RawImage (String path) throws FileNotFoundException{
-		setPath(path);
+		setFile(path);
 	}
 	
 	@Override
@@ -27,7 +27,7 @@ public class RawImage extends Image {
 	 * @param path
 	 * @throws FileNotFoundException
 	 */
-	public void setPath(String path) throws FileNotFoundException {
+	public void setFile(String path) throws FileNotFoundException {
 		file = new File(path);
 		
 		if (file.exists()) {

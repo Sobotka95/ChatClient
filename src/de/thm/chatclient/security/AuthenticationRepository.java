@@ -15,6 +15,10 @@ public class AuthenticationRepository {
 		return instance;
 	}
 	
+	private AuthenticationRepository() {
+		
+	}
+	
 	/**
 	 * Function checks the connection to the server with the given parameters.
 	 * @return "true" if the connection is correct.

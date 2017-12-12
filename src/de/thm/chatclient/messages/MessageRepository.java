@@ -1,6 +1,5 @@
 package de.thm.chatclient.messages;
 
-import java.io.File;
 import java.io.FileInputStream;
 import java.io.FileNotFoundException;
 import java.io.IOException;
@@ -12,7 +11,6 @@ import de.thm.chatclient.contacts.ContactRepository;
 import de.thm.chatclient.contacts.Group;
 import de.thm.chatclient.contacts.Person;
 import de.thm.chatclient.security.Authentication;
-import de.thm.chatclient.security.AuthenticationRepository;
 import de.thm.oop.chat.base.server.*;
 
 /**
@@ -37,6 +35,10 @@ public class MessageRepository {
 			instance = new MessageRepository();
 		}
 		return instance;
+	}
+	
+	private MessageRepository() {
+		
 	}
 	
 	/**
